@@ -22,6 +22,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	// 로그인
 	@PostMapping("login")
 	public ResponseEntity<User> login(
 				@RequestParam(value="user_email") String user_email,
