@@ -1,7 +1,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="UserMapper">
 
-	<select id="fingByEmail" parameterType="String" resultType="User">
+	<select id="findByEmail" parameterType="String" resultType="User">
 		SELECT * FROM user
 		WHERE user_email=#{user_email}
 	</select>
@@ -16,8 +16,7 @@
 			user_birth,
 			target_amount,
 			created_date,
-			modified_date,
-			del_ny
+			modified_date
 		)
 		values
 		(
@@ -28,8 +27,7 @@
 			#{user_birth},
 			#{target_amount},
 			SYSDATE(),
-			SYSDATE(),
-			#{del_ny}
+			SYSDATE()
 		)
 	</insert>
 

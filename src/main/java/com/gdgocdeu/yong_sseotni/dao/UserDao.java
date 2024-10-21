@@ -12,6 +12,10 @@ public class UserDao {
 	@Autowired
 	SqlSession s;
 	
+	public User login(User u) {
+		return s.selectOne("UserMapper.login", u);
+	}
+	
 	public User findByEmail(String user_email) {
 		return s.selectOne("UserMapper.findByEmail", user_email);
 	}

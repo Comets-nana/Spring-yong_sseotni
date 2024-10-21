@@ -1,5 +1,7 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,29 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@PostMapping("login")
+	public ResponseEntity<User> login(
+				@RequestParam(value="user_email") String user_email,
+				@RequestParam(value="user_pw") String user_pw,
+				HttpSession session
+			){
+		
+		User u = new User();
+		u.setUser_email(user_email);
+		u.setUser_pw(user_pw);
+		
+		User result = userService.login(u);
+		
+		
+		if(result!=null) {
+			//세션에 정보 넣기
+			session.setAttribute("me", result);
+		}
+		
+		
+		return new ResponseEntity<User>(result, HttpStatus.OK);
+	}
 	
 	// 회원가입
 	@PostMapping("join")
