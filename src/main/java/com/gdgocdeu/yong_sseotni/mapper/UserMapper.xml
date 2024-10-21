@@ -1,0 +1,36 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserMapper">
+
+	<select id="fingByEmail" parameterType="String" resultType="User">
+		SELECT * FROM user
+		WHERE user_email=#{user_email}
+	</select>
+
+	<insert id="join" parameterType="User">
+		insert into `user`
+		(
+			login_provider,
+			user_email,
+			user_pw,
+			user_nick,
+			user_birth,
+			target_amount,
+			created_date,
+			modified_date,
+			del_ny
+		)
+		values
+		(
+			#{login_provider},
+			#{user_email},
+			MD5(#{user_pw}),
+			#{user_nick},
+			#{user_birth},
+			#{target_amount},
+			SYSDATE(),
+			SYSDATE(),
+			#{del_ny}
+		)
+	</insert>
+
+</mapper>
