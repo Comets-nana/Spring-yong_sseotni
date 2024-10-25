@@ -14,22 +14,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
+    
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .host("3.36.22.27:8080") // 외부 IP 설정
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.my.project"))  // API 패키지 경로 설정
+                .apis(RequestHandlerSelectors.basePackage("com.gdgocdeu.yong_sseotni"))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo());  // API 정보 설정
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("새로운 API 타이틀")       // 타이틀 설정
-                .description("API 설명")         // 설명 설정
-                .version("1.0.0")                // 버전 설정
+                .title("용썼니 API 명세서")
+                .description("안드로이드 앱 <용썼니>의 API 명세서 입니다.")
+                .version("1.0.0")
                 .build();
     }
 }
