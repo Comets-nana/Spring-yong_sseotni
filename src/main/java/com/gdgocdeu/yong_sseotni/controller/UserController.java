@@ -1,5 +1,8 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,29 +25,29 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	// 로그인
 	@PostMapping("login")
-	public ResponseEntity<User> login(
-				@RequestParam(value="user_email") String user_email,
-				@RequestParam(value="user_pw") String user_pw,
-				HttpSession session
-			){
-		
-		User u = new User();
-		u.setUser_email(user_email);
-		u.setUser_pw(user_pw);
-		
-		User result = userService.login(u);
-		
-		
-		if(result!=null) {
-			//세션에 정보 넣기
-			session.setAttribute("me", result);
-		}
-		
-		
-		return new ResponseEntity<User>(result, HttpStatus.OK);
+	public ResponseEntity<Object> login(
+	            @RequestParam(value="user_email") String user_email,
+	            @RequestParam(value="user_pw") String user_pw,
+	            HttpSession session
+	        ){
+	    
+	    User u = new User();
+	    u.setUser_email(user_email);
+	    u.setUser_pw(user_pw);
+	    
+	    User result = userService.login(u);
+	    
+	    if(result != null) {
+	        // 세션에 정보 넣기
+	        session.setAttribute("me", result);
+	        return new ResponseEntity<>(result, HttpStatus.OK);
+	    } else {
+	        // 로그인 실패 시 적절한 에러 메시지와 상태 코드 반환
+	        return new ResponseEntity<>("이메일 또는 비밀번호가 잘못 되었습니다. 이메일과 비밀번호를 정확히 입력해 주세요.", HttpStatus.UNAUTHORIZED);
+	    }
 	}
+
 	
 	// 회원가입
 	@PostMapping("join")
