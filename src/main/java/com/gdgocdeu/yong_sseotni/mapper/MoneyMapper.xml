@@ -1,0 +1,27 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MoneyMapper">
+
+	<insert id="save" parameterType="Money">
+		insert into `money`
+		(
+			user_idx,
+			money_when,
+			money_type,
+			money_where,
+			money_in,
+			money_out,
+			created_date
+		)
+		values
+		(
+			#{user_idx},
+			#{money_when},
+			#{money_type},
+			#{money_where},
+			#{money_in},
+			#{money_out},
+			SYSDATE()
+		)
+	</insert>
+
+</mapper>
