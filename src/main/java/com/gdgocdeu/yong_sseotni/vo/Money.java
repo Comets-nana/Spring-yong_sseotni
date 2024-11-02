@@ -1,5 +1,7 @@
 package com.gdgocdeu.yong_sseotni.vo;
 
+import java.math.BigDecimal;
+
 public class Money {
 	
 	private int money_idx=0;
@@ -11,6 +13,10 @@ public class Money {
 	private int money_out=0;
 	private String created_date=null;
 	private String del_ny=null;
+	
+	// 월별 수입/지출 총액
+	private BigDecimal totalMoneyIn = BigDecimal.ZERO;
+    private BigDecimal totalMoneyOut = BigDecimal.ZERO;
 	
 	
 	
@@ -67,6 +73,18 @@ public class Money {
 	}
 	public void setDel_ny(String del_ny) {
 		this.del_ny = del_ny;
+	}
+	public BigDecimal getTotalMoneyIn() {
+		return totalMoneyIn;
+	}
+	public void setTotalMoneyIn(BigDecimal totalMoneyIn) {
+		this.totalMoneyIn = totalMoneyIn;
+	}
+	public BigDecimal getTotalMoneyOut() {
+		return totalMoneyOut;
+	}
+	public void setTotalMoneyOut(BigDecimal totalMoneyOut) {
+		this.totalMoneyOut = totalMoneyOut;
 	}
 	
 }

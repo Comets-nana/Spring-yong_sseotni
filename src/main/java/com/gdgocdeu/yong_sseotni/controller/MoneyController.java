@@ -1,9 +1,13 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +23,16 @@ public class MoneyController {
 
 	@Autowired
 	MoneyService moneyService;
+	
+	// (달력) 월 수입/지출 총액 데이터 계산해서 불러오기
+	@GetMapping("/getMonthlyTotal")
+	public ResponseEntity<Map<String, BigDecimal>> getMonthlyTotal (
+			@RequestParam int user_idx,
+			@RequestParam int year,
+            @RequestParam int month) {
+		Map<String, BigDecimal> totals = moneyService.getMonthlyTotal(user_idx, year, month);
+        return ResponseEntity.ok(totals);
+	}
 	
 	// 수입/지출 등록
 	@PostMapping("save")

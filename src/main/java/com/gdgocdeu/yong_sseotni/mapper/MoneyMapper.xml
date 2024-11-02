@@ -1,6 +1,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MoneyMapper">
-
+	
+	<select id="getMonthlyTotal" parameterType="map" resultType="map">
+	    SELECT
+	        SUM(m.money_in) AS totalMoneyIn,
+	        SUM(m.money_out) AS totalMoneyOut
+	        
+	    FROM `user` u
+	    INNER JOIN money m ON u.user_idx = m.user_idx
+	    WHERE
+	        u.user_idx = #{user_idx}
+	        AND YEAR(m.created_date) = #{year}
+        	AND MONTH(m.created_date) = #{month}
+	</select>
+	
 	<insert id="save" parameterType="Money">
 		insert into `money`
 		(
