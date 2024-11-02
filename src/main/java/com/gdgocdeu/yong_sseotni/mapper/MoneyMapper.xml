@@ -30,8 +30,8 @@
 	    INNER JOIN money m ON u.user_idx = m.user_idx
 	    WHERE
 	        u.user_idx = #{user_idx}
-	        AND YEAR(m.created_date) = #{year}
-        	AND MONTH(m.created_date) = #{month}
+	        AND YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{year}
+	        AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month}
 	</select>
 	
 	<insert id="save" parameterType="Money">

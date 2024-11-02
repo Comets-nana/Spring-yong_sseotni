@@ -2,37 +2,37 @@ package com.gdgocdeu.yong_sseotni.vo;
 
 public class DailyMoney {
 	
-	private String moneyType;
-    private String moneyWhere; 
-    private Integer moneyIn;
-    private Integer moneyOut;
+	private String money_type;
+    private String money_where; 
+    private Integer money_in;
+    private Integer money_out;
     private String money;
     
     
     
-	public String getMoneyType() {
-		return moneyType;
+	public String getMoney_type() {
+		return money_type;
 	}
-	public void setMoneyType(String moneyType) {
-		this.moneyType = moneyType;
+	public void setMoney_type(String money_type) {
+		this.money_type = money_type;
 	}
-	public String getMoneyWhere() {
-		return moneyWhere;
+	public String getMoney_where() {
+		return money_where;
 	}
-	public void setMoneyWhere(String moneyWhere) {
-		this.moneyWhere = moneyWhere;
+	public void setMoney_where(String money_where) {
+		this.money_where = money_where;
 	}
-	public Integer getMoneyIn() {
-		return moneyIn;
+	public Integer getMoney_in() {
+		return money_in;
 	}
-	public void setMoneyIn(Integer moneyIn) {
-		this.moneyIn = moneyIn;
+	public void setMoney_in(Integer money_in) {
+		this.money_in = money_in;
 	}
-	public Integer getMoneyOut() {
-		return moneyOut;
+	public Integer getMoney_out() {
+		return money_out;
 	}
-	public void setMoneyOut(Integer moneyOut) {
-		this.moneyOut = moneyOut;
+	public void setMoney_out(Integer money_out) {
+		this.money_out = money_out;
 	}
 	public String getMoney() {
 		return money;
@@ -40,6 +40,6 @@ public class DailyMoney {
 	public void setMoney(String money) {
 		this.money = money;
 	}
-	
+    
     
 }
