@@ -1,6 +1,7 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdgocdeu.yong_sseotni.service.MoneyService;
+import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
 
 @RestController
@@ -23,6 +25,17 @@ public class MoneyController {
 
 	@Autowired
 	MoneyService moneyService;
+	
+	// (달력) 일일 수입/지출 내역 불러오기
+	@GetMapping("/getDailyMoneyList")
+	public ResponseEntity<List<DailyMoney>> getDailyMoneyList (
+			@RequestParam int user_idx,
+			@RequestParam int year,
+			@RequestParam int month,
+			@RequestParam int day) {
+		List<DailyMoney> dailyList = moneyService.getDailyMoneyList(user_idx, year, month, day);
+		return ResponseEntity.ok(dailyList);
+	}
 	
 	// (달력) 월 수입/지출 총액 데이터 계산해서 불러오기
 	@GetMapping("/getMonthlyTotal")
