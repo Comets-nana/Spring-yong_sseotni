@@ -12,6 +12,14 @@ public class UserService {
 	@Autowired
 	UserDao userDao;
 	
+	public int updateUser(User u) {
+		return userDao.updateUser(u);
+	}
+	
+	public User findByIdx(int user_idx) {
+		return userDao.findByIdx(user_idx);
+	}
+	
 	public User login(User u) {
 		return userDao.login(u);
 	}

@@ -1,5 +1,7 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,29 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@PostMapping("updateUser")
+	public ResponseEntity<?> updateUser(
+			@RequestParam(value="user_idx") int user_idx,
+			@RequestParam(value="user_nick") String user_nick,
+			@RequestParam(value="user_birth") String user_birth,
+			@RequestParam(value="target_amount") int target_amount
+			) {
+		
+		User user = userService.findByIdx(user_idx);
+		
+		if (user == null) {
+	        return new ResponseEntity<>("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		user.setUser_nick(user_nick);
+		user.setUser_birth(user_birth);
+		user.setTarget_amount(target_amount);
+		
+		userService.updateUser(user);
+		return new ResponseEntity<>(user, HttpStatus.OK);
+		
+	}
 	
 	@PostMapping("login")
 	public ResponseEntity<Object> login(

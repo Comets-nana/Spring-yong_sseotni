@@ -12,6 +12,14 @@ public class UserDao {
 	@Autowired
 	SqlSession s;
 	
+	public int updateUser(User u) {
+		return s.update("UserMapper.updateUser", u);
+	}
+	
+	public User findByIdx(int user_idx) {
+		return s.selectOne("UserMapper.findByIdx", user_idx);
+	}
+	
 	public User login(User u) {
 		return s.selectOne("UserMapper.login", u);
 	}
