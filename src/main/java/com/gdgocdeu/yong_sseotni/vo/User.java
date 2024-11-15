@@ -1,5 +1,7 @@
 package com.gdgocdeu.yong_sseotni.vo;
 
+import java.time.LocalDateTime;
+
 public class User {
 	
 	private int user_idx=0;
@@ -8,9 +10,8 @@ public class User {
 	private String user_pw=null;
 	private String user_nick=null;
 	private String user_birth=null;
-	private int target_amount=0;
-	private String created_date=null;
-	private String modified_date=null;
+	private LocalDateTime created_date=null;
+	private LocalDateTime modified_date=null;
 	private String del_ny=null;
 	
 	
@@ -51,22 +52,16 @@ public class User {
 	public void setUser_birth(String user_birth) {
 		this.user_birth = user_birth;
 	}
-	public int getTarget_amount() {
-		return target_amount;
-	}
-	public void setTarget_amount(int target_amount) {
-		this.target_amount = target_amount;
-	}
-	public String getCreated_date() {
+	public LocalDateTime getCreated_date() {
 		return created_date;
 	}
-	public void setCreated_date(String created_date) {
+	public void setCreated_date(LocalDateTime created_date) {
 		this.created_date = created_date;
 	}
-	public String getModified_date() {
+	public LocalDateTime getModified_date() {
 		return modified_date;
 	}
-	public void setModified_date(String modified_date) {
+	public void setModified_date(LocalDateTime modified_date) {
 		this.modified_date = modified_date;
 	}
 	public String getDel_ny() {

@@ -31,8 +31,7 @@ public class UserController {
 	public ResponseEntity<?> updateUser(
 			@RequestParam(value="user_idx") int user_idx,
 			@RequestParam(value="user_nick") String user_nick,
-			@RequestParam(value="user_birth") String user_birth,
-			@RequestParam(value="target_amount") int target_amount
+			@RequestParam(value="user_birth") String user_birth
 			) {
 		
 		User user = userService.findByIdx(user_idx);
@@ -43,7 +42,6 @@ public class UserController {
 		
 		user.setUser_nick(user_nick);
 		user.setUser_birth(user_birth);
-		user.setTarget_amount(target_amount);
 		
 		userService.updateUser(user);
 		return new ResponseEntity<>(user, HttpStatus.OK);
@@ -81,8 +79,7 @@ public class UserController {
 			@RequestParam(value="user_email") String user_email,
 			@RequestParam(value="user_pw") String user_pw,
 			@RequestParam(value="user_nick") String user_nick,
-			@RequestParam(value="user_birth") String user_birth,
-			@RequestParam(value="target_amount") int target_amount
+			@RequestParam(value="user_birth") String user_birth
 			) {
 		
 		// 이메일 유효성 검사
@@ -105,7 +102,6 @@ public class UserController {
 		u.setUser_pw(user_pw);
 		u.setUser_nick(user_nick);
 		u.setUser_birth(user_birth);
-		u.setTarget_amount(target_amount);
 		
 		
 		userService.join(u);

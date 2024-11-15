@@ -3,12 +3,14 @@
 
 	<update id="updateUser" parameterType="User">
 		UPDATE user
-		set
+		SET
 			user_nick=#{user_nick},
 			user_birth=#{user_birth},
-			target_amount=#{target_amount}
-		where
+			modified_date = SYSDATE()
+		WHERE
 			user_idx=#{user_idx}
+		AND
+			del_ny='n'
 	</update>
 	
 	<select id="findByIdx" parameterType="Integer" resultType="User">
@@ -18,7 +20,7 @@
 	
 	<select id="login" parameterType="User" resultType="User">
 		SELECT * FROM user
-		WHERE user_email=#{user_email} AND user_pw=MD5(#{user_pw})
+		WHERE user_email=#{user_email} AND user_pw=MD5(#{user_pw}) AND del_ny='n'
 	</select>
 	
 	<select id="findByEmail" parameterType="String" resultType="User">
@@ -34,7 +36,6 @@
 			user_pw,
 			user_nick,
 			user_birth,
-			target_amount,
 			created_date,
 			modified_date
 		)
@@ -45,7 +46,6 @@
 			MD5(#{user_pw}),
 			#{user_nick},
 			#{user_birth},
-			#{target_amount},
 			SYSDATE(),
 			SYSDATE()
 		)
