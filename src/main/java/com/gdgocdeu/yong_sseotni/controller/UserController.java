@@ -27,6 +27,30 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@PostMapping("deleteUser")
+	public ResponseEntity<String> deleteUser(
+			@RequestParam(value="user_idx") int user_idx,
+			@RequestParam(value="user_pw") String user_pw
+			) {
+		
+		User user = userService.findByIdx(user_idx);
+		
+		if (user == null) {
+	        return new ResponseEntity<>("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		String currentPw = user.getUser_pw();
+		if (user.getUser_pw() == null || !user.getUser_pw().equals(currentPw)) {
+			return new ResponseEntity<String>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
+		}
+		
+		user.setDel_ny("y");
+		userService.deleteUser(user);
+		
+		return new ResponseEntity<String>("회원탈퇴가 완료되었습니다.", HttpStatus.OK);
+		
+	}
+	
 	@PostMapping("updateUser")
 	public ResponseEntity<?> updateUser(
 			@RequestParam(value="user_idx") int user_idx,

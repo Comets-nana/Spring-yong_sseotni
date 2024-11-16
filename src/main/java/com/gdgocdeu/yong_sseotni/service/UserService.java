@@ -12,6 +12,10 @@ public class UserService {
 	@Autowired
 	UserDao userDao;
 	
+	public int deleteUser(User u) {
+		return userDao.deleteUser(u);
+	}
+	
 	public int updateUser(User u) {
 		return userDao.updateUser(u);
 	}
