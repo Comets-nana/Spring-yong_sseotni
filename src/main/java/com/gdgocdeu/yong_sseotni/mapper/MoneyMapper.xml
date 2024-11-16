@@ -1,6 +1,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MoneyMapper">
 	
+	<select id="getDailyTotal" parameterType="map" resultType="map">
+	    SELECT
+	        SUM(m.money_in) AS dailyMoneyIn,
+	        SUM(m.money_out) AS dailyMoneyOut
+	        
+	    FROM `user` u
+	    INNER JOIN money m ON u.user_idx = m.user_idx
+	    WHERE
+	        u.user_idx = #{user_idx}
+	        AND YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{year}
+	        AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month}
+	        AND DAY(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{day}
+	</select>
+	
 	<select id="getDailyMoneyList" parameterType="map" resultType="map">
 		SELECT
 			money_type,

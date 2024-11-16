@@ -17,6 +17,10 @@ public class MoneyDao {
 	@Autowired
 	SqlSession s;
 	
+	public Map<String, BigDecimal> getDailyTotal(int user_idx, int year, int month, int day) {
+		return s.selectOne("getDailyTotal", Map.of("user_idx", user_idx, "year", year, "month", month, "day", day));
+	}
+	
 	public List<DailyMoney> getDailyMoneyList(int user_idx, int year, int month, int day) {
 		return s.selectList("getDailyMoneyList", Map.of("user_idx", user_idx, "year", year, "month", month, "day", day));
 	}

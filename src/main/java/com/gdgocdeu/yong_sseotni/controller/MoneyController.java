@@ -26,6 +26,18 @@ public class MoneyController {
 	@Autowired
 	MoneyService moneyService;
 	
+	// (달력) 일일 수입/지출 총액 데이터 계산해서 불러오기
+	@GetMapping("/getDailyTotal")
+	public ResponseEntity<Map<String, BigDecimal>> getDailyTotal (
+			@RequestParam int user_idx,
+			@RequestParam int year,
+			@RequestParam int month,
+			@RequestParam int day
+			) {
+		Map<String, BigDecimal> dailyTotal = moneyService.getDailyTotal(user_idx, year, month, day);
+		return ResponseEntity.ok(dailyTotal);
+	}
+	
 	// (달력) 일일 수입/지출 내역 불러오기
 	@GetMapping("/getDailyMoneyList")
 	public ResponseEntity<List<DailyMoney>> getDailyMoneyList (

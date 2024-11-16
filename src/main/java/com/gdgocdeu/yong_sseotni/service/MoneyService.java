@@ -21,6 +21,19 @@ public class MoneyService {
 	@Autowired
 	MoneyDao moneyDao;
 	
+	public Map<String, BigDecimal> getDailyTotal(int user_idx, int year, int month, int day) {
+		Map<String, BigDecimal> dailyTotal = moneyDao.getDailyTotal(user_idx, year, month, day);
+		
+		// 계산할 데이터가 없을 때 각각 0원으로 표시
+        if (dailyTotal == null) {
+        	dailyTotal = new HashMap<>();
+        	dailyTotal.put("dailyMoneyIn", BigDecimal.ZERO);
+        	dailyTotal.put("dailyMoneyOut", BigDecimal.ZERO);
+        }
+        
+        return dailyTotal;
+	}
+	
 	public List<DailyMoney> getDailyMoneyList(int user_idx, int year, int month, int day) {
 		List<DailyMoney> dailyList = moneyDao.getDailyMoneyList(user_idx, year, month, day);
 		
