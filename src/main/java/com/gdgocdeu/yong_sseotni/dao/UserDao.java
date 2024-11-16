@@ -12,6 +12,10 @@ public class UserDao {
 	@Autowired
 	SqlSession s;
 	
+	public int updatePw(User u) {
+		return s.update("UserMapper.updatePw", u);
+	}
+	
 	public int deleteUser(User u) {
 		return s.update("UserMapper.deleteUser", u);
 	}

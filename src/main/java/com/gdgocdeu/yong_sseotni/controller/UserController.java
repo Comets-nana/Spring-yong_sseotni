@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,43 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	// MD5 암호화 메서드
+	private String encryptMD5(String password) {
+	    return DigestUtils.md5DigestAsHex(password.getBytes());
+	}
+	
+	// 회원 비밀번호 변경
+	@PostMapping("updatePw")
+	public ResponseEntity<String> updatePw(
+			@RequestParam(value="user_idx") int user_idx,
+			@RequestParam(value="current_pw") String current_pw,
+			@RequestParam(value="new_pw") String new_pw
+			) {
+		
+		User user = userService.findByIdx(user_idx);
+		
+		if (user == null) {
+			return new ResponseEntity<>("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND);
+		}
+		
+		String currentPw = encryptMD5(current_pw);
+		if (!user.getUser_pw().equals(currentPw)) {
+			return new ResponseEntity<String>("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
+		}
+		
+		String newPw = encryptMD5(new_pw);
+		if (currentPw.equals(newPw)) {
+			return new ResponseEntity<String>("현재 비밀번호와 동일합니다. 다른 비밀번호를 입력해주세요.", HttpStatus.FORBIDDEN);
+		}
+		
+		user.setUser_pw(newPw);
+		userService.updatePw(user);
+		
+		return new ResponseEntity<String>("비밀번호가 변경되었습니다.", HttpStatus.OK);
+		
+	}
+	
+	// 회원탈퇴
 	@PostMapping("deleteUser")
 	public ResponseEntity<String> deleteUser(
 			@RequestParam(value="user_idx") int user_idx,
@@ -51,6 +89,7 @@ public class UserController {
 		
 	}
 	
+	// 회원정보 수정
 	@PostMapping("updateUser")
 	public ResponseEntity<?> updateUser(
 			@RequestParam(value="user_idx") int user_idx,
@@ -72,6 +111,7 @@ public class UserController {
 		
 	}
 	
+	// 로그인
 	@PostMapping("login")
 	public ResponseEntity<Object> login(
 	            @RequestParam(value="user_email") String user_email,
