@@ -1,6 +1,7 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,42 @@ public class MoneyController {
 
 	@Autowired
 	MoneyService moneyService;
+	
+	// 지난 달과 이번 달과의 지출 비교
+	@GetMapping("/compareMoney")
+	public ResponseEntity<Map<String, Object>> compareMoney (
+			@RequestParam int user_idx,
+			@RequestParam int currentYear,
+			@RequestParam int currentMonth
+			) {
+		
+		int lastYear = currentMonth == 1 ? currentYear - 1 : currentYear;
+	    int lastMonth = currentMonth == 1 ? 12 : currentMonth - 1;
+	    
+		Map<String, BigDecimal> compareResult = moneyService.compareMoney(user_idx, currentYear, currentMonth, lastYear, lastMonth);
+		
+	    BigDecimal currentMonthOut = compareResult.getOrDefault("currentMonthOut", BigDecimal.ZERO);
+	    BigDecimal lastMonthOut = compareResult.getOrDefault("lastMonthOut", BigDecimal.ZERO);
+
+	    BigDecimal difference = currentMonthOut.subtract(lastMonthOut).abs();
+	    String message;
+	    
+	    if (currentMonthOut.compareTo(lastMonthOut) > 0) {
+	        message = "저번 달보다 " + difference + "원 이상 더 썼어요.";
+	    } else if (currentMonthOut.compareTo(lastMonthOut) < 0) {
+	        message = "저번 달보다 " + difference + "원 이상 절약했어요.";
+	    } else {
+	        message = "저번 달과 차이가 없어요.";
+	    }
+
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("currentMonthOut", currentMonthOut);
+	    response.put("lastMonthOut", lastMonthOut);
+	    response.put("message", message);
+
+	    return ResponseEntity.ok(response);
+	    
+	}
 	
 	// (달력) 일일 수입/지출 총액 데이터 계산해서 불러오기
 	@GetMapping("/getDailyTotal")

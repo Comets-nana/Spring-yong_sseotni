@@ -21,6 +21,12 @@ public class MoneyService {
 	@Autowired
 	MoneyDao moneyDao;
 	
+	public Map<String, BigDecimal> compareMoney(int user_idx, int currentYear, int currentMonth, int lastYear, int lastMonth) {
+		Map<String, BigDecimal> compareResult = moneyDao.compareMoney(user_idx, currentYear, currentMonth, lastYear, lastMonth);
+		
+		return compareResult;
+	}
+	
 	public Map<String, BigDecimal> getDailyTotal(int user_idx, int year, int month, int day) {
 		Map<String, BigDecimal> dailyTotal = moneyDao.getDailyTotal(user_idx, year, month, day);
 		

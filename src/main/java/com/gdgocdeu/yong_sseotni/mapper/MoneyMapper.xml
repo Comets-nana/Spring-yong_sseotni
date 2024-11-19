@@ -1,6 +1,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MoneyMapper">
 	
+	<select id="compareMoney" parameterType="map" resultType="map">
+	    SELECT
+	        SUM(CASE 
+	            WHEN YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{currentYear} 
+	                 AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{currentMonth} 
+	            THEN m.money_out 
+	            ELSE 0 
+	        END) AS currentMonthOut,
+	        SUM(CASE 
+	            WHEN YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{lastYear} 
+	                 AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{lastMonth} 
+	            THEN m.money_out 
+	            ELSE 0 
+	        END) AS lastMonthOut
+	    FROM `user` u
+	    INNER JOIN money m ON u.user_idx = m.user_idx
+	    WHERE u.user_idx = #{user_idx}
+	</select>
+	
 	<select id="getDailyTotal" parameterType="map" resultType="map">
 	    SELECT
 	        SUM(m.money_in) AS dailyMoneyIn,
