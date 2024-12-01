@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdgocdeu.yong_sseotni.service.MoneyService;
+import com.gdgocdeu.yong_sseotni.service.UserService;
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
 import com.gdgocdeu.yong_sseotni.vo.User;
@@ -27,6 +28,9 @@ public class MoneyController {
 
 	@Autowired
 	MoneyService moneyService;
+	
+	@Autowired
+	UserService userService;
 	
 	// 수입/지출 데이터 삭제
 	@PostMapping("/deleteMoney")
@@ -127,6 +131,12 @@ public class MoneyController {
 			@RequestParam(value="money_in") int money_in,
 			@RequestParam(value="money_out") int money_out
 			) {
+		
+		User user = userService.findByIdx(user_idx);
+		
+		if (user == null) {
+	        return new ResponseEntity<>("로그인 후 이용 가능합니다.", HttpStatus.NOT_FOUND);
+	    }
 		
 		Money m = new Money();
 		

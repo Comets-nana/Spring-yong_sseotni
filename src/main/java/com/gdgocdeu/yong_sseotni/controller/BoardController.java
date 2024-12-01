@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gdgocdeu.yong_sseotni.service.BoardService;
+import com.gdgocdeu.yong_sseotni.service.UserService;
 import com.gdgocdeu.yong_sseotni.vo.Board;
+import com.gdgocdeu.yong_sseotni.vo.User;
 
 @RestController
 @CrossOrigin()
@@ -20,13 +22,22 @@ public class BoardController {
 	@Autowired
 	BoardService boardService;
 	
-	// 수입/지출 등록
+	@Autowired
+	UserService userService;
+	
+	// 게시글 작성
 	@PostMapping("save")
 	public ResponseEntity<?> save (
 			@RequestParam(value="user_idx") int user_idx,
 			@RequestParam(value="board_title") String board_title,
 			@RequestParam(value="board_content") String board_content
 			) {
+		
+		User user = userService.findByIdx(user_idx);
+		
+		if (user == null) {
+	        return new ResponseEntity<>("로그인 후 작성 가능합니다.", HttpStatus.NOT_FOUND);
+	    }
 		
 		Board b = new Board();
 		
