@@ -10,12 +10,21 @@ import org.springframework.stereotype.Repository;
 
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
+import com.gdgocdeu.yong_sseotni.vo.User;
 
 @Repository
 public class MoneyDao {
 
 	@Autowired
 	SqlSession s;
+	
+	public int deleteMoney(Money m) {
+		return s.update("MoneyMapper.deleteMoney", m);
+	}
+	
+	public Money findByIdx(int money_idx) {
+		return s.selectOne("MoneyMapper.findByIdx", money_idx);
+	}
 	
 	public Map<String, BigDecimal> compareMoney(int user_idx, int currentYear, int currentMonth, int lastYear, int lastMonth) {
 		return s.selectOne("compareMoney", Map.of("user_idx", user_idx, "currentYear", currentYear, "currentMonth", currentMonth, "lastYear", lastYear, "lastMonth", lastMonth));

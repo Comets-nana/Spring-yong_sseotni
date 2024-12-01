@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.gdgocdeu.yong_sseotni.service.MoneyService;
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
+import com.gdgocdeu.yong_sseotni.vo.User;
 
 @RestController
 @CrossOrigin()
@@ -26,6 +27,23 @@ public class MoneyController {
 
 	@Autowired
 	MoneyService moneyService;
+	
+	// 수입/지출 데이터 삭제
+	@PostMapping("/deleteMoney")
+	public ResponseEntity<String> deleteMoney(
+			@RequestParam(value="money_idx") int money_idx
+			) {
+		Money money = moneyService.findByIdx(money_idx);
+		
+		if (money == null) {
+	        return new ResponseEntity<>("데이터가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		money.setDel_ny("y");
+		moneyService.deleteMoney(money);
+		
+		return new ResponseEntity<String>("데이터가 삭제되었습니다.", HttpStatus.OK);
+	}
 	
 	// 지난 달과 이번 달과의 지출 비교
 	@GetMapping("/compareMoney")
@@ -77,12 +95,15 @@ public class MoneyController {
 	
 	// (달력) 일일 수입/지출 내역 불러오기
 	@GetMapping("/getDailyMoneyList")
-	public ResponseEntity<List<DailyMoney>> getDailyMoneyList (
+	public ResponseEntity<?> getDailyMoneyList (
 			@RequestParam int user_idx,
 			@RequestParam int year,
 			@RequestParam int month,
 			@RequestParam int day) {
 		List<DailyMoney> dailyList = moneyService.getDailyMoneyList(user_idx, year, month, day);
+		if (dailyList.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("불러올 데이터가 없습니다.");
+	    }
 		return ResponseEntity.ok(dailyList);
 	}
 	

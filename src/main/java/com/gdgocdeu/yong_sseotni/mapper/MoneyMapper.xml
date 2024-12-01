@@ -1,6 +1,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MoneyMapper">
 	
+	<update id="deleteMoney" parameterType="Money">
+		UPDATE money
+		SET
+			del_ny=#{del_ny}
+		WHERE
+			money_idx=#{money_idx}
+	</update>
+	
+	<select id="findByIdx" parameterType="Integer" resultType="Money">
+		SELECT * FROM money
+		WHERE money_idx=#{money_idx} AND del_ny='n'
+	</select>
+	
 	<select id="compareMoney" parameterType="map" resultType="map">
 	    SELECT
 	        SUM(CASE 
@@ -18,6 +31,7 @@
 	    FROM `user` u
 	    INNER JOIN money m ON u.user_idx = m.user_idx
 	    WHERE u.user_idx = #{user_idx}
+	    AND m.del_ny='n'
 	</select>
 	
 	<select id="getDailyTotal" parameterType="map" resultType="map">
@@ -32,6 +46,7 @@
 	        AND YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{year}
 	        AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month}
 	        AND DAY(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{day}
+	        AND m.del_ny='n'
 	</select>
 	
 	<select id="getDailyMoneyList" parameterType="map" resultType="map">
@@ -52,6 +67,7 @@
 	        AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month}
 	        AND DAY(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{day}
         	AND (money_in &lt;&gt; 0 OR money_out &lt;&gt; 0)
+        	AND m.del_ny='n'
 	</select>
 	
 	<select id="getMonthlyTotal" parameterType="map" resultType="map">
@@ -65,6 +81,7 @@
 	        u.user_idx = #{user_idx}
 	        AND YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{year}
 	        AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month}
+	        AND m.del_ny='n'
 	</select>
 	
 	<insert id="save" parameterType="Money">

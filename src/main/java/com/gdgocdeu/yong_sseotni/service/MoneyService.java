@@ -14,12 +14,21 @@ import org.springframework.web.server.ResponseStatusException;
 import com.gdgocdeu.yong_sseotni.dao.MoneyDao;
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
+import com.gdgocdeu.yong_sseotni.vo.User;
 
 @Service
 public class MoneyService {
 
 	@Autowired
 	MoneyDao moneyDao;
+	
+	public int deleteMoney(Money m) {
+		return moneyDao.deleteMoney(m);
+	}
+	
+	public Money findByIdx(int money_idx) {
+		return moneyDao.findByIdx(money_idx);
+	}
 	
 	public Map<String, BigDecimal> compareMoney(int user_idx, int currentYear, int currentMonth, int lastYear, int lastMonth) {
 		Map<String, BigDecimal> compareResult = moneyDao.compareMoney(user_idx, currentYear, currentMonth, lastYear, lastMonth);
