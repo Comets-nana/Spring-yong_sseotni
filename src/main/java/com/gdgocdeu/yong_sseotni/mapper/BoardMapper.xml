@@ -1,6 +1,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BoardMapper">
-
+	
+	<update id="deleteBoard" parameterType="Board">
+		UPDATE board
+		SET
+			del_ny=#{del_ny}
+		WHERE
+			board_idx=#{board_idx}
+	</update>
+	
+	<select id="findByIdx" parameterType="Integer" resultType="Board">
+		SELECT * FROM board
+		WHERE board_idx=#{board_idx} AND del_ny='n'
+	</select>
+	
+	<update id="updateBoard" parameterType="Board">
+		UPDATE board
+		SET
+			board_title=#{board_title},
+			board_content=#{board_content},
+			modified_date = SYSDATE()
+		WHERE
+			board_idx=#{board_idx}
+		AND
+			del_ny='n'
+	</update>
+	
 	<insert id="save" parameterType="Board">
 		insert into `board`
 		(

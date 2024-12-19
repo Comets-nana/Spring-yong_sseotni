@@ -25,6 +25,75 @@ public class BoardController {
 	@Autowired
 	UserService userService;
 	
+	// 회원탈퇴
+	@PostMapping("deleteBoard")
+	public ResponseEntity<String> deleteBoard(
+			@RequestParam(value="board_idx") int board_idx,
+			@RequestParam(value="user_idx") int user_idx
+			) {
+		
+		User user = userService.findByIdx(user_idx);
+		if (user == null) {
+	        return new ResponseEntity<>("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		Board board = boardService.findByIdx(board_idx);
+		if (board == null) {
+	        return new ResponseEntity<>("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		// 요청 사용자와 게시글 작성자 비교
+	    if (board.getUser_idx() != user_idx) {
+	        return new ResponseEntity<>("삭제할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
+	    }
+		
+		board.setDel_ny("y");
+		int result = boardService.deleteBoard(board);
+		
+		if (result > 0) {
+			return new ResponseEntity<>("게시글 삭제가 완료되었습니다.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("게시글 삭제를 실패하였습니다.", HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
+	// 게시글 수정
+	@PostMapping("updateBoard")
+	public ResponseEntity<?> updateUser(
+			@RequestParam(value="board_idx") int board_idx,
+			@RequestParam(value="board_title") String board_title,
+			@RequestParam(value="board_content") String board_content,
+			@RequestParam(value="user_idx") int user_idx
+			) {
+		
+		User user = userService.findByIdx(user_idx);
+		if (user == null) {
+	        return new ResponseEntity<>("존재하지 않는 회원입니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		Board board = boardService.findByIdx(board_idx);
+		if (board == null) {
+	        return new ResponseEntity<>("존재하지 않는 게시글입니다.", HttpStatus.NOT_FOUND);
+	    }
+		
+		// 요청 사용자와 게시글 작성자 비교
+	    if (board.getUser_idx() != user_idx) {
+	        return new ResponseEntity<>("수정할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
+	    }
+		
+		board.setBoard_title(board_title);
+		board.setBoard_content(board_content);
+		
+		int result = boardService.updateBoard(board);
+		if (result > 0) {
+			return new ResponseEntity<>("게시글 수정이 완료되었습니다.", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("게시글 수정이 실패하였습니다.", HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
 	// 게시글 작성
 	@PostMapping("save")
 	public ResponseEntity<?> save (
