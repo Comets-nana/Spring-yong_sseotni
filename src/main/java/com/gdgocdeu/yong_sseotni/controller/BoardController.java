@@ -25,7 +25,7 @@ public class BoardController {
 	@Autowired
 	UserService userService;
 	
-	// 회원탈퇴
+	// 게시글 삭제
 	@PostMapping("deleteBoard")
 	public ResponseEntity<String> deleteBoard(
 			@RequestParam(value="board_idx") int board_idx,
