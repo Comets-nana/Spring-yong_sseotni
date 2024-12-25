@@ -27,6 +27,10 @@ public class MoneyDao {
 		return s.selectOne("MoneyMapper.findByIdx", money_idx);
 	}
 	
+	public List<Map<String, BigDecimal>> compareMoneyDetail(int user_idx, int year, int month) {
+		return s.selectList("compareMoneyDetail", Map.of("user_idx", user_idx, "year", year, "month", month));
+	}
+	
 	public Map<String, BigDecimal> compareMoney(int user_idx, int currentYear, int currentMonth, int lastYear, int lastMonth) {
 		return s.selectOne("compareMoney", Map.of("user_idx", user_idx, "currentYear", currentYear, "currentMonth", currentMonth, "lastYear", lastYear, "lastMonth", lastMonth));
 	}

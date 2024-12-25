@@ -31,6 +31,12 @@ public class MoneyService {
 		return moneyDao.findByIdx(money_idx);
 	}
 	
+	public List<Map<String, BigDecimal>> compareMoneyDetail(int user_idx, int year, int month) {
+		List<Map<String, BigDecimal>> compareResult = moneyDao.compareMoneyDetail(user_idx, year, month);
+		System.out.println(compareResult);
+		return compareResult;
+	}
+	
 	public Map<String, BigDecimal> compareMoney(int user_idx, int currentYear, int currentMonth, int lastYear, int lastMonth) {
 		Map<String, BigDecimal> compareResult = moneyDao.compareMoney(user_idx, currentYear, currentMonth, lastYear, lastMonth);
 		

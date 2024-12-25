@@ -50,6 +50,27 @@ public class MoneyController {
 		return new ResponseEntity<String>("데이터가 삭제되었습니다.", HttpStatus.OK);
 	}
 	
+	// 월별 사용처별 지출 비중
+	@GetMapping("/compareMoneyDetail")
+	public ResponseEntity<Map<String, Object>> compareMoneyDetail (
+			@RequestParam int user_idx,
+			@RequestParam int year,
+			@RequestParam int month
+			) {
+	    
+		List<Map<String, BigDecimal>> typePercentages = moneyService.compareMoneyDetail(user_idx, year, month);
+
+	    Map<String, Object> response = new HashMap<>();
+	    if (typePercentages != null && !typePercentages.isEmpty()) {
+	        response.put("moneyTypePercentages", typePercentages);
+	    } else {
+	        response.put("message", "데이터가 없습니다.");
+	    }
+
+	    return ResponseEntity.ok(response);
+	    
+	}
+	
 	// 지난 달과 이번 달과의 지출 비교
 	@GetMapping("/compareMoney")
 	public ResponseEntity<Map<String, Object>> compareMoney (

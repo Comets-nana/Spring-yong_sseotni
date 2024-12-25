@@ -14,6 +14,41 @@
 		WHERE money_idx=#{money_idx} AND del_ny='n'
 	</select>
 	
+	<select id="compareMoneyDetail" parameterType="map" resultType="map">
+	    SELECT
+		    m.money_type,
+		    -- 월별 지출 금액
+		    SUM(CASE 
+		            WHEN YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{year} 
+		                 AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month} 
+		            THEN m.money_out 
+		            ELSE 0 
+		        END) AS monthOut,
+		
+		    -- money_type별 비중 계산
+		    FLOOR(
+			    (SUM(CASE 
+			            WHEN YEAR(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{year} 
+			                 AND MONTH(STR_TO_DATE(m.money_when, '%Y-%m-%d')) = #{month} 
+			            THEN m.money_out 
+			            ELSE 0 
+			        END) / 
+			        (SELECT SUM(CASE 
+			            WHEN YEAR(STR_TO_DATE(m2.money_when, '%Y-%m-%d')) = #{year} 
+			                 AND MONTH(STR_TO_DATE(m2.money_when, '%Y-%m-%d')) = #{month} 
+			            THEN m2.money_out 
+			            ELSE 0 
+			        END) 
+			        FROM money m2 
+			        WHERE m2.user_idx = #{user_idx} 
+			        AND m2.del_ny = 'n')) * 100
+			) AS monthPercentage
+		FROM money m
+		WHERE m.user_idx = #{user_idx}
+		AND m.del_ny = 'n'
+		GROUP BY m.money_type
+	</select>
+	
 	<select id="compareMoney" parameterType="map" resultType="map">
 	    SELECT
 	        SUM(CASE 
