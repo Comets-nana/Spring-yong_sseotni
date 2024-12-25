@@ -19,6 +19,7 @@ import com.gdgocdeu.yong_sseotni.service.MoneyService;
 import com.gdgocdeu.yong_sseotni.service.UserService;
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
+import com.gdgocdeu.yong_sseotni.vo.MonthlyMoney;
 import com.gdgocdeu.yong_sseotni.vo.User;
 
 @RestController
@@ -95,6 +96,19 @@ public class MoneyController {
 			) {
 		Map<String, BigDecimal> dailyTotal = moneyService.getDailyTotal(user_idx, year, month, day);
 		return ResponseEntity.ok(dailyTotal);
+	}
+	
+	// (달력) 월별 수입/지출 내역 불러오기
+	@GetMapping("/getMonthlyMoneyList")
+	public ResponseEntity<?> getMonthlyMoneyList (
+			@RequestParam int user_idx,
+			@RequestParam int year,
+			@RequestParam int month) {
+		List<MonthlyMoney> monthlyList = moneyService.getMonthlyMoneyList(user_idx, year, month);
+		if (monthlyList.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("불러올 데이터가 없습니다.");
+	    }
+		return ResponseEntity.ok(monthlyList);
 	}
 	
 	// (달력) 일일 수입/지출 내역 불러오기

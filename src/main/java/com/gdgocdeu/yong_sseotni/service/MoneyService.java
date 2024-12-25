@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.gdgocdeu.yong_sseotni.dao.MoneyDao;
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
+import com.gdgocdeu.yong_sseotni.vo.MonthlyMoney;
 import com.gdgocdeu.yong_sseotni.vo.User;
 
 @Service
@@ -47,6 +48,17 @@ public class MoneyService {
         }
         
         return dailyTotal;
+	}
+	
+	public List<MonthlyMoney> getMonthlyMoneyList(int user_idx, int year, int month) {
+		List<MonthlyMoney> monthlyList = moneyDao.getMonthlyMoneyList(user_idx, year, month);
+		
+		// 불러올 일일 수입/지출 데이터가 없을 때
+		if (monthlyList == null || monthlyList.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NO_CONTENT);
+		}
+		
+		return monthlyList;
 	}
 	
 	public List<DailyMoney> getDailyMoneyList(int user_idx, int year, int month, int day) {

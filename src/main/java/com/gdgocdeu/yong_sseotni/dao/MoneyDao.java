@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.gdgocdeu.yong_sseotni.vo.DailyMoney;
 import com.gdgocdeu.yong_sseotni.vo.Money;
+import com.gdgocdeu.yong_sseotni.vo.MonthlyMoney;
 import com.gdgocdeu.yong_sseotni.vo.User;
 
 @Repository
@@ -32,6 +33,10 @@ public class MoneyDao {
 	
 	public Map<String, BigDecimal> getDailyTotal(int user_idx, int year, int month, int day) {
 		return s.selectOne("getDailyTotal", Map.of("user_idx", user_idx, "year", year, "month", month, "day", day));
+	}
+	
+	public List<MonthlyMoney> getMonthlyMoneyList(int user_idx, int year, int month) {
+		return s.selectList("getMonthlyMoneyList", Map.of("user_idx", user_idx, "year", year, "month", month));
 	}
 	
 	public List<DailyMoney> getDailyMoneyList(int user_idx, int year, int month, int day) {
