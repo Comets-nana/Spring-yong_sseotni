@@ -1,6 +1,7 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,12 +89,15 @@ public class MoneyController {
 	    BigDecimal lastMonthOut = compareResult.getOrDefault("lastMonthOut", BigDecimal.ZERO);
 
 	    BigDecimal difference = currentMonthOut.subtract(lastMonthOut).abs();
+	    
+	    DecimalFormat formatter = new DecimalFormat("#,###");
+	    String formattedDifference = formatter.format(difference);
 	    String message;
 	    
 	    if (currentMonthOut.compareTo(lastMonthOut) > 0) {
-	        message = "저번 달보다 " + difference + "원 이상 더 썼어요.";
+	        message = "저번 달보다 " + formattedDifference + "원 이상 더 썼어요.";
 	    } else if (currentMonthOut.compareTo(lastMonthOut) < 0) {
-	        message = "저번 달보다 " + difference + "원 이상 절약했어요.";
+	        message = "저번 달보다 " + formattedDifference + "원 이상 절약했어요.";
 	    } else {
 	        message = "저번 달과 차이가 없어요.";
 	    }
