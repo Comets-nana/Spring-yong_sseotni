@@ -1,9 +1,12 @@
 package com.gdgocdeu.yong_sseotni.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +27,16 @@ public class BoardController {
 	
 	@Autowired
 	UserService userService;
+	
+	// 게시글 조회(정렬조건, 페이지네이션 추가)
+	@GetMapping("findByBoardPage")
+	public List<Board> findByBoardPage(
+			@RequestParam(defaultValue = "latest") String sortBy,
+			@RequestParam(defaultValue = "0") int start, 
+	        @RequestParam(defaultValue = "10") int count
+			) {
+		return boardService.findByBoardPage(sortBy, start, count, "n");
+	}
 	
 	// 게시글 삭제
 	@PostMapping("deleteBoard")

@@ -1,17 +1,29 @@
 package com.gdgocdeu.yong_sseotni.dao;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.gdgocdeu.yong_sseotni.vo.Board;
-import com.gdgocdeu.yong_sseotni.vo.User;
 
 @Repository
 public class BoardDao {
 
 	@Autowired
 	SqlSession s;
+	
+	public List<Board> findByBoardPage(String orderBy, int start, int count, String delNy) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("orderBy", orderBy);
+		params.put("start", start);
+	    params.put("count", count);
+	    params.put("delNy", delNy);
+		return s.selectList("BoardMapper.findByBoardPage", params);
+	}
 	
 	public int deleteBoard(Board b) {
 		return s.update("BoardMapper.deleteBoard", b);
